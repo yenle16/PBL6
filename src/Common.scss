@@ -1,0 +1,34 @@
+$roboto-regular-font: 'Roboto-Regular';
+$roboto-regular-font-path: 'assets/fonts/Roboto-Regular.woff2';
+$fontSizeSmall: 14px;
+$fontSizeMedium: 16px;
+$fontSizeLarge: 18px;
+$textColor: black;
+$font-weight-nomal: 300;
+$font-weight-bold: 700;
+$border-radius: 30px;
+//
+$blue-light: #D5F0F9;
+$blue-dark: #0F1C4C;
+$mainBg: white;
+
+@font-face {
+    font-family: 'Roboto-Regular';
+    src: url($roboto-regular-font-path) format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: $roboto-regular-font;
+    font-size: $fontSizeSmall;
+    color: $textColor;
+    // width: 1366px;   
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+* {
+    box-sizing: border-box;
+}
