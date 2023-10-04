@@ -7,14 +7,16 @@ import styles from "./RegisterHost1.module.scss";
 import SelectComponent from "../../../components/select/Select";
 import IcThumbsUp from "../../../components/icons/home-icons/IcThumbsUp";
 import IcLightBulb from "../../../components/icons/home-icons/IcLightBulb";
-import { apiGetDistricts, apiGetProvinces } from "../../../../api/apiAddress";
+import { apiGetDistricts, apiGetProvinces ,apiGetWards } from "../../../../api/apiAddress";
 
 const RegisterHost1Container = () => {
   const [provinces, setProvinces] = useState([]);
-  const [districts, setDistricts] = useState({});
-  const [communes, setCommunes] = useState([]);
-  const [selectedProvince, setSelectedProvince] = useState('');
-  const [selectedDistrict, setSelectedDistrict] = useState('');
+  const [districts, setDistricts] = useState([]);
+  const [wards, setWards] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState();
+  const [selectedDistrict, setSelectedDistrict] = useState();
+  const [selectedWard, setSelectedWard] = useState();
+
 
   // Fetch data function
   // const fetchData = async (url, setter) => {
@@ -70,15 +72,32 @@ const RegisterHost1Container = () => {
     const fetchDistrict =async()=>{
       const response =await apiGetDistricts(selectedProvince)
       if (response.status ===200){
-        setDistricts(response?.data.results)
         
+        setDistricts(response?.data.results)
       }
+      
     }
 
 
     provinces && fetchDistrict()
-    // !selectedProvince && setDistricts([])
+    !selectedProvince && setDistricts([])
   },[selectedProvince])
+
+  useEffect(()=>{
+    setSelectedWard(null)
+    const fetchWard =async()=>{
+      const response =await apiGetWards(selectedDistrict)
+      if (response.status ===200){
+        
+        setWards(response?.data.results)
+      }
+    }
+
+
+    districts && fetchWard()
+    !selectedDistrict && setWards([])
+  },[selectedDistrict])
+
 
   const handleProvinceChange = (event) => {
 
@@ -93,26 +112,26 @@ const RegisterHost1Container = () => {
     setSelectedDistrict(event.target.value);
   };
 
-  const cityOptions = [
-    { value: "", text: "--Chọn thành phố--", disabled: true },
-    { value: "43", text: "TP Đà Nẵng" },
-    { value: "92", text: "Quảng Nam" },
-    { value: "75", text: "Thừa Thiên Huế" },
-  ];
+  // const cityOptions = [
+  //   { value: "", text: "--Chọn thành phố--", disabled: true },
+  //   { value: "43", text: "TP Đà Nẵng" },
+  //   { value: "92", text: "Quảng Nam" },
+  //   { value: "75", text: "Thừa Thiên Huế" },
+  // ];
 
-  const districtOptions = [
-    { value: "", text: "--Chọn huyện--", disabled: true },
-    { value: "1", text: "Quận Hải Châu" },
-    { value: "2", text: "Quận Thanh Khê" },
-    { value: "3", text: "Quận Liên Chiểu" },
-  ];
+  // const districtOptions = [
+  //   { value: "", text: "--Chọn huyện--", disabled: true },
+  //   { value: "1", text: "Quận Hải Châu" },
+  //   { value: "2", text: "Quận Thanh Khê" },
+  //   { value: "3", text: "Quận Liên Chiểu" },
+  // ];
 
-  const subDistrictOptions = [
-    { value: "", text: "--Chọn phường/xã--", disabled: true },
-    { value: "1", text: "Phường Hòa Minh" },
-    { value: "2", text: "Phường Hòa Khánh Bắc" },
-    { value: "3", text: "Phường Hòa Khách Nam" },
-  ];
+  // const wardOptions = [
+  //   { value: "", text: "--Chọn phường/xã--", disabled: true },
+  //   { value: "1", text: "Phường Hòa Minh" },
+  //   { value: "2", text: "Phường Hòa Khánh Bắc" },
+  //   { value: "3", text: "Phường Hòa Khách Nam" },
+  // ];
   const [selected, setSelected] = useState("");
 
   // const handleChange = (event) => {
@@ -170,16 +189,13 @@ const RegisterHost1Container = () => {
 
               <div className={` flex flex-col   $styles['info-box']`}>
                 <h3 className="py-2 ">Phường/Xã</h3>
-                {/* {selectedDistrict && (
-                  <SelectComponent
-                    label="Xã/Phường"
-                    options={communes.map((commune) => ({
-                      value: commune.code,
-                      text: commune.name,
-                    }))}
+                
+                <SelectComponent 
+                    type='ward' 
+                    value={selectedWard}
+                    setValue={setSelectedWard}
+                    options={wards}
                   />
-                )} */}
-                {/* {<SelectComponent options={subDistrictOptions}/>} */}
                 {/* {<Select styles={{}} options={cityOptions} />} */}
               </div>
 
