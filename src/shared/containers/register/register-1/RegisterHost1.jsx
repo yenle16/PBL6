@@ -2,12 +2,17 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 
-import axios from "axios";
 import styles from "./RegisterHost1.module.scss";
 import SelectComponent from "../../../components/select/Select";
 import IcThumbsUp from "../../../components/icons/home-icons/IcThumbsUp";
 import IcLightBulb from "../../../components/icons/home-icons/IcLightBulb";
-import { apiGetDistricts, apiGetProvinces ,apiGetWards } from "../../../../api/apiAddress";
+import {
+  apiGetDistricts,
+  apiGetProvinces,
+  apiGetWards,
+} from "../../../../api/apiAddress";
+import IcChevronLeft from "../../../components/icons/home-icons/IcChevronLeft";
+import { Link } from "react-router-dom";
 
 const RegisterHost1Container = () => {
   const [provinces, setProvinces] = useState([]);
@@ -17,137 +22,47 @@ const RegisterHost1Container = () => {
   const [selectedDistrict, setSelectedDistrict] = useState();
   const [selectedWard, setSelectedWard] = useState();
 
-
-  // Fetch data function
-  // const fetchData = async (url, setter) => {
-  //   try {
-  //     const response = await fetch(url);
-  //     if (!response.ok) {
-  //       throw new Error("Network response was not ok");
-  //     }
-
-  //     const result = await response.json();
-  //     // console.log(result)
-  //     setter(result);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // Fetch data for provinces
-  //   fetchData("https://provinces.open-api.vn/api/", setProvinces);
-
-  // }, []);
-
-  // useEffect(() => {
-  //   // Fetch data for districts when province changes
-  //   if (selectedProvince) {
-  //     fetchData (`https://provinces.open-api.vn/api/p/${selectedProvince}?depth=2`,setDistricts)
-      
-      
-  //   }
-  // }, [selectedProvince]);
-
-  // useEffect(() => {
-  //   // Fetch data for communes when district changes
-  //   if (selectedDistrict) {
-  //     fetchData(`https://provinces.open-api.vn/api/d/${selectedDistrict}/c/`, setCommunes);
-  //   }
-  // }, [selectedDistrict]);
-
-  useEffect(()=>{
-    const fetchProvince =async()=>{
-      const response =await apiGetProvinces()
-      if (response.status ===200){
-        setProvinces(response?.data.results)
+  useEffect(() => {
+    const fetchProvince = async () => {
+      const response = await apiGetProvinces();
+      if (response.status === 200) {
+        setProvinces(response?.data.results);
       }
+    };
+    fetchProvince();
+  }, []);
 
-    }
-    fetchProvince()
-  },[])
-
-  useEffect(()=>{
-    setSelectedDistrict(null)
-    const fetchDistrict =async()=>{
-      const response =await apiGetDistricts(selectedProvince)
-      if (response.status ===200){
-        
-        setDistricts(response?.data.results)
+  useEffect(() => {
+    setSelectedDistrict(null);
+    const fetchDistrict = async () => {
+      const response = await apiGetDistricts(selectedProvince);
+      if (response.status === 200) {
+        setDistricts(response?.data.results);
       }
-      
-    }
+    };
 
+    provinces && fetchDistrict();
+    !selectedProvince && setDistricts([]);
+  }, [selectedProvince]);
 
-    provinces && fetchDistrict()
-    !selectedProvince && setDistricts([])
-  },[selectedProvince])
-
-  useEffect(()=>{
-    setSelectedWard(null)
-    const fetchWard =async()=>{
-      const response =await apiGetWards(selectedDistrict)
-      if (response.status ===200){
-        
-        setWards(response?.data.results)
+  useEffect(() => {
+    setSelectedWard(null);
+    const fetchWard = async () => {
+      const response = await apiGetWards(selectedDistrict);
+      if (response.status === 200) {
+        setWards(response?.data.results);
       }
-    }
+    };
 
+    districts && fetchWard();
+    !selectedDistrict && setWards([]);
+  }, [selectedDistrict]);
 
-    districts && fetchWard()
-    !selectedDistrict && setWards([])
-  },[selectedDistrict])
-
-
-  const handleProvinceChange = (event) => {
-
-   
-    setSelectedProvince(event.target.value);
-    setSelectedDistrict("");
-    console.log(selectedProvince)
-
-  };
-
-  const handleDistrictChange = (event) => {
-    setSelectedDistrict(event.target.value);
-  };
-
-  // const cityOptions = [
-  //   { value: "", text: "--Chọn thành phố--", disabled: true },
-  //   { value: "43", text: "TP Đà Nẵng" },
-  //   { value: "92", text: "Quảng Nam" },
-  //   { value: "75", text: "Thừa Thiên Huế" },
-  // ];
-
-  // const districtOptions = [
-  //   { value: "", text: "--Chọn huyện--", disabled: true },
-  //   { value: "1", text: "Quận Hải Châu" },
-  //   { value: "2", text: "Quận Thanh Khê" },
-  //   { value: "3", text: "Quận Liên Chiểu" },
-  // ];
-
-  // const wardOptions = [
-  //   { value: "", text: "--Chọn phường/xã--", disabled: true },
-  //   { value: "1", text: "Phường Hòa Minh" },
-  //   { value: "2", text: "Phường Hòa Khánh Bắc" },
-  //   { value: "3", text: "Phường Hòa Khách Nam" },
-  // ];
-  const [selected, setSelected] = useState("");
-
-  // const handleChange = (event) => {
-  //   console.log(
-  //     "",
-  //     event.target.selectedOptions[0].label,
-  //     "Mã: ",
-  //     event.target.value
-  //   );
-  //   setSelected(event.target.value);
-  // };
   return (
-    <div className={`${styles["register-1"]}`}>
+    <div className={` ${styles["register-1"]}`}>
       <div className={`${styles["content"]}`}>
         <div className="title">
-          <h2 className="text-3xl">
+          <h2 className="text-3xl overflow-hidden">
             Đăng chỗ nghỉ của Quý vị trên InnSight và bắt đầu đón tiếp khách
             thật nhanh chóng!
           </h2>
@@ -156,46 +71,44 @@ const RegisterHost1Container = () => {
           </p>
         </div>
         <div className="flex justify-between">
-          <div className={`flex-1 px-5 shadow-md ${styles["form"]}`}>
-            <div className={`$styles['info-address']`}>
+          <div className={` flex-1 ${styles["form"]}`}>
+            <div className={`px-5 shadow-md pb-5 ${styles['info-address']}`}>
               <h3 className="py-3 text-lg ">Địa chỉ cụ thể</h3>
               <div className="flex justify-between">
-                <div className={` flex flex-col   $styles['info-box']`}>
+                <div className={` flex flex-col   ${styles['info-box']} `}>
                   <h3 className="py-2 ">Tỉnh/TP</h3>
-                  <SelectComponent 
-                    type='province' 
+                  <SelectComponent
+                    type="province"
                     value={selectedProvince}
                     setValue={setSelectedProvince}
                     options={provinces}
                   />
-                  
+
                   {/* <SelectComponent options={cityOptions}/> */}
                   {/* {<Select styles={{}} options={cityOptions} />} */}
                 </div>
 
                 <div className={` flex flex-col   $styles['info-box']`}>
                   <h3 className="py-2">Quận/Huyện</h3>
-                  
-                  <SelectComponent 
-                    type='district' 
+
+                  <SelectComponent
+                    type="district"
                     value={selectedDistrict}
                     setValue={setSelectedDistrict}
                     options={districts}
                   />
-                 
-                 
                 </div>
               </div>
 
               <div className={` flex flex-col   $styles['info-box']`}>
                 <h3 className="py-2 ">Phường/Xã</h3>
-                
-                <SelectComponent 
-                    type='ward' 
-                    value={selectedWard}
-                    setValue={setSelectedWard}
-                    options={wards}
-                  />
+
+                <SelectComponent
+                  type="ward"
+                  value={selectedWard}
+                  setValue={setSelectedWard}
+                  options={wards}
+                />
                 {/* {<Select styles={{}} options={cityOptions} />} */}
               </div>
 
@@ -208,8 +121,28 @@ const RegisterHost1Container = () => {
                 ></input>
               </div>
             </div>
+
+            <div className={`flex pt-7`}>
+              <Link to="/host">
+
+                <button
+                  className={`border-2 px-6 py-3 mr-2 flex-none rounded-md`}
+                  >
+                  <IcChevronLeft />
+                </button>
+              </Link>
+                <button
+                  className={`border-2  font-bold text-2xl flex-grow rounded-md ${styles["btn-continue"]}`}
+                >
+              <Link to="/host/register-2">
+                  Tiếp tục
+              </Link>
+                </button>
+            </div>
           </div>
-          <div className={`flex-1 flex justify-between ml-3 ${styles["hint"]}`}>
+          <div
+            className={`flex-1  justify-between ml-3 hidden lg:flex ${styles["hint"]}`}
+          >
             <div className={`mx-4 p-5 flex-1 ${styles["hint-box"]}`}>
               <div className="flex h-16 align-top ">
                 <IcThumbsUp />

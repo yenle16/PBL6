@@ -1,9 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./Header.module.scss";
-import IcHotel from "../icons/header-icons/IcHotel";
-import IcSell from "../icons/header-icons/IcSell";
-import IcGroup from "../icons/header-icons/IcGroup";
+
 import IcAvatar from "../icons/header-icons/IcAvatar";
 import IcPencil from "../icons/header-icons/IcPencil";
 const Header = () => {
@@ -12,7 +10,7 @@ const Header = () => {
     <header className={`hidden md:flex ${styles["header"]}`}>
       <Link
         to={"/"}
-        className={` flex items-center   lg:px-6 xl:px-8 ${styles["logo-text"]}`}
+        className={` flex items-center font-bold  ${styles["logo-text"]}`}
       >
         InnSight
       </Link>

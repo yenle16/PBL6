@@ -1,7 +1,5 @@
 import React from "react";
-import { useState } from "react";
 import styles from "../select/Select.module.scss";
-import Select from "react-select";
 
 const SelectComponent = ({ options, value, setValue, type }) => {
   return (

@@ -4,6 +4,7 @@ import IcFaceSmile from '../../../components/icons/home-icons/IcFaceSmile'
 
 import imgBanner from '../../../../assets/images/banner.jpg'
 import styles from './RegisterHome.module.scss'
+import { Link } from 'react-router-dom'
 
 const feedback=[
     {
@@ -19,14 +20,14 @@ const RegisterHomeContainer = () => {
 
     return (
         <div className={`${styles['home']}`}>
-            <div className={`flex justify-between ${styles['first-banner']} ${styles['banner']}`}>
-                <div className='hidden lg:flex flex-1 flex-col   text-left mr-20'>
-                    <h1 className=''>Đăng ký nơi lưu trú của mình trên InnSight</h1>
-                    <p className='text-2xl'>Dù kinh doanh chỗ nghỉ là công việc tay trái hay toàn thời gian, đừng quên đăng kí 
+            <div className={`flex justify-between items-center ${styles['first-banner']} ${styles['banner']}`}>
+                <div className='hidden xl:flex flex-1 flex-col 2xl:text-left xl:mr-20'>
+                    <h1 className='font-extrabold'>Đăng ký nơi lưu trú của mình trên InnSight</h1>
+                    <p className='text-2xl font-medium'>Dù kinh doanh chỗ nghỉ là công việc tay trái hay toàn thời gian, đừng quên đăng kí 
                         nhà nghỉ dưỡng trên Booking.com để tiếp cận du khách khắp thế giới</p>
                 </div>
 
-                <div className={` sm:items-center sm:px-5  flex-none ${styles['register-form']}`} >
+                <div className={`flex-none items-center ${styles['register-form']}`} >
                     <p className='text-xl font-medium py-5'>Tăng thu nhập với lượng đơn đặt đều đặn</p>
 
                     <div className={`${styles['reason-register']}`}>
@@ -50,8 +51,10 @@ const RegisterHomeContainer = () => {
                     </div>
 
                     <button className={`py-2 px-4 rounded drop-shadow-md inline-flex items-center justify-center ${styles['button-register']}`}>
-                    
+                            <Link to="/host/register-1">
                             <span className='font-semibold text-xl'>Đăng ký ngay</span>
+
+                            </Link>
                      </button>
                     
                 </div>
